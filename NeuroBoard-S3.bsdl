@@ -1,0 +1,37 @@
+entity NEUROBOARD_S3 is
+  generic (PHYSICAL_PIN_MAP : string := "HDR44");
+  port (
+    -- J1, left header (pins 1-22)
+    GPIO19, GPIO20, GPIO21, GPIO47, GPIO48, GPIO45, GPIO0,
+    GPIO38, GPIO39, GPIO40, GPIO41, GPIO42, GPIO2, GPIO1,
+    GPIO44, GPIO43 : inout bit;
+    -- J2, right header (pins 23-44)
+    GPIO14, GPIO13, GPIO12, GPIO11, GPIO10, GPIO9, GPIO46,
+    GPIO3, GPIO8, GPIO18, GPIO17, GPIO16, GPIO15, GPIO7,
+    GPIO6, GPIO5, GPIO4 : inout bit;
+    RST : in bit;                      -- = EN, active low
+    VIN, V3V3_1, V3V3_2,               -- VIN = 5V rail in
+    GND_1, GND_2, GND_3, GND_4,
+    NC_1, NC_2, NC_3 : linkage bit     -- physically present, unconnected
+  );
+  use STD_1149_1_1994.all;
+  attribute COMPONENT_CONFORMANCE of NEUROBOARD_S3 : entity is "STD_1149_1_1993";
+  attribute PIN_MAP of NEUROBOARD_S3 : entity is PHYSICAL_PIN_MAP;
+  constant HDR44 : pin_map_string :=
+    -- J1 left, top -> bottom
+    "GND_1:1, GND_2:2, GPIO19:3, GPIO20:4, GPIO21:5, GPIO47:6, " &
+    "GPIO48:7, GPIO45:8, GPIO0:9, NC_1:10, NC_2:11, NC_3:12, " &
+    "GPIO38:13, GPIO39:14, GPIO40:15, GPIO41:16, GPIO42:17, " &
+    "GPIO2:18, GPIO1:19, GPIO44:20, GPIO43:21, GND_3:22, " &
+    -- J2 right, top -> bottom
+    "GND_4:23, VIN:24, GPIO14:25, GPIO13:26, GPIO12:27, GPIO11:28, " &
+    "GPIO10:29, GPIO9:30, GPIO46:31, GPIO3:32, GPIO8:33, GPIO18:34, " &
+    "GPIO17:35, GPIO16:36, GPIO15:37, GPIO7:38, GPIO6:39, GPIO5:40, " &
+    "GPIO4:41, RST:42, V3V3_1:43, V3V3_2:44";
+  attribute INSTRUCTION_LENGTH of NEUROBOARD_S3 : entity is 8;
+  attribute INSTRUCTION_OPCODE of NEUROBOARD_S3 : entity is
+    "BYPASS (11111111), EXTEST (00000000), SAMPLE (00000001)";
+  attribute INSTRUCTION_CAPTURE of NEUROBOARD_S3 : entity is "00000001";
+  attribute BOUNDARY_LENGTH of NEUROBOARD_S3 : entity is 1;
+  attribute BOUNDARY_REGISTER of NEUROBOARD_S3 : entity is "0 (BC_1, *, control, 0)";
+end NEUROBOARD_S3;
